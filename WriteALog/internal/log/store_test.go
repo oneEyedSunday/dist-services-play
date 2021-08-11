@@ -50,7 +50,7 @@ func testRead(t *testing.T, s *store) {
 
 func testReadAt(t *testing.T, s *store) {
 	t.Helper()
-	for i, off := uint64(1), int64(0);  i < 4; i++ {
+	for i, off := uint64(1), int64(0); i < 4; i++ {
 		b := make([]byte, lenWidth)
 		n, err := s.ReadAt(b, off)
 		require.NoError(t, err)
@@ -71,7 +71,7 @@ func TestStoreClose(t *testing.T) {
 	f, err := ioutil.TempFile("", "store_close_test")
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
-	
+
 	s, err := newStore(f)
 	require.NoError(t, err)
 	_, _, err = s.Append(write)
@@ -87,9 +87,9 @@ func TestStoreClose(t *testing.T) {
 
 func openFile(name string) (file *os.File, size int64, err error) {
 	f, err := os.OpenFile(
-	name,
-	os.O_RDWR|os.O_CREATE|os.O_APPEND,
-	0644,
+		name,
+		os.O_RDWR|os.O_CREATE|os.O_APPEND,
+		0644,
 	)
 	if err != nil {
 		return nil, 0, err

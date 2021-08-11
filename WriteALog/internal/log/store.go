@@ -10,9 +10,9 @@ import (
 
 // encoding for storing record sizes
 var enc = binary.BigEndian
+
 // number of bytes used to store a records length
 const lenWidth = 8
-
 
 type store struct {
 	// why don't we just make this explicitly define Read() and Write()
@@ -21,9 +21,9 @@ type store struct {
 	// well I do realise *os.File houses lots of code
 	// left to see what we actually use
 	*os.File
-	buf *bufio.Writer
+	buf  *bufio.Writer
 	size uint64
-	mu sync.Mutex
+	mu   sync.Mutex
 }
 
 func newStore(f *os.File) (*store, error) {
@@ -34,7 +34,7 @@ func newStore(f *os.File) (*store, error) {
 	return &store{
 		File: f,
 		size: uint64(fi.Size()),
-		buf: bufio.NewWriter(f),
+		buf:  bufio.NewWriter(f),
 	}, nil
 }
 
@@ -60,7 +60,7 @@ func (s *store) Append(p []byte) (numWritten uint64, pos uint64, err error) {
 		return uint64(n), pos, err
 	}
 
-	n  += lenWidth
+	n += lenWidth
 	s.size += uint64(n)
 
 	return uint64(n), pos, nil
@@ -84,7 +84,7 @@ func (s *store) Read(pos uint64) ([]byte, error) {
 
 	b := make([]byte, enc.Uint64(size))
 
-	if _, err := s.File.ReadAt(b, int64(pos + lenWidth)); err != nil {
+	if _, err := s.File.ReadAt(b, int64(pos+lenWidth)); err != nil {
 		// TODO check for _ < len(b) which indicated EOF
 		return nil, err
 	}
