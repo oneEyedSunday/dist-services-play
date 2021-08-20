@@ -19,7 +19,7 @@ type index struct {
 	size uint64
 }
 
-func NewIndex(f *os.File, c Config) (*index, error) {
+func newIndex(f *os.File, c Config) (*index, error) {
 	idx := &index{
 		file: f,
 	}
@@ -91,7 +91,7 @@ func (i *index) Write(off uint32, pos uint64) error {
 	return nil
 }
 
-func Close(i *index) error {
+func (i *index) Close() error {
 	if err := i.mmap.Sync(gommap.MS_SYNC); err != nil {
 		return err
 	}

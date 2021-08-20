@@ -1,0 +1,8 @@
+syntax = "proto3";
+package log.v1;
+option go_package = "github.com/oneeyedsunday/dist-services-play/api/log";
+
+message Record {
+    bytes value = 1; 
+    uint64 offset = 2;
+}
