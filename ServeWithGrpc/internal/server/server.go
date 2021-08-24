@@ -4,6 +4,7 @@ import (
 	"context"
 
 	api "github.com/oneeyedsunday/dist-services-play/api/v1"
+	"google.golang.org/grpc"
 )
 
 type Config struct {
@@ -23,12 +24,20 @@ type CommitLog interface {
 	Read(uint64) (*api.Record, error)
 }
 
-var _ api.LogServer = (*grpcServer)(nil)
-
 func newGrpcServer(config *Config) (*grpcServer, error) {
 	return &grpcServer{
 		Config: config,
 	}, nil
+}
+
+func NewGRPCServer(config *Config) (*grpc.Server, error) {
+	gsrv := grpc.NewServer()
+	srv, err := newGrpcServer(config)
+	if err != nil {
+		return nil, err
+	}
+	api.RegisterLogServer(gsrv, srv)
+	return gsrv, nil
 }
 
 func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (*api.ProduceResponse, error) {
