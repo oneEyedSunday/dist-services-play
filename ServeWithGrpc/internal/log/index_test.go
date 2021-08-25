@@ -42,7 +42,7 @@ func TestIndex(t *testing.T) {
 
 	_, _, err = idx.Read(int64(len(entries)))
 	require.Error(t, err, io.EOF)
-	_ = idx.file.Close()
+	_ = idx.Close()
 
 	f, _ = os.OpenFile(f.Name(), os.O_RDWR, 0600)
 	idx, err = newIndex(f, c)
