@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/oneeyedsunday/dist-services-golang/ServeWithGrpc/internal/log"
 	api "github.com/oneeyedsunday/dist-services-play/api/v1"
+	"github.com/oneeyedsunday/dist-services-play/internal/log"
 	"google.golang.org/grpc"
 )
 
@@ -33,7 +33,7 @@ func setupTest(t *testing.T, fn func(*Config)) (client api.LogClient, cfg *Confi
 	l, err := net.Listen("tcp", ":0")
 	require.NoError(t, err)
 
-	clientOptions := []grpc.DialOptions{grpc.WithInsecure()}
+	clientOptions := []grpc.DialOption{grpc.WithInsecure()}
 	cc, err := grpc.Dial(l.Addr().String(), clientOptions...)
 	require.NoError(t, err)
 
